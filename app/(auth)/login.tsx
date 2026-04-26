@@ -1,28 +1,38 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Text, View } from 'react-native';
-import Button from '../../components/ui/button';
-import Input from '../../components/ui/input';
+import { router } from "expo-router";
+import { useState } from "react";
+import { Text, View } from "react-native";
+import Button from "../../components/ui/button";
+import Input from "../../components/ui/input";
+import { useAuth } from "../../hooks/useAuth";
 
-export default function LoginScreen() {
+export default function Login() {
+  const { login } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+      router.replace("/(tabs)");
+    } catch (err: any) {
+      console.log(err);
+      alert(err?.response?.data?.message || err.message || "Login failed");
+    }
+  };
+
   return (
-    <View style={{ margin: 20, paddingHorizontal: 24, paddingVertical: 32, borderRadius: 42, backgroundColor: '#ffffff', overflow: 'hidden' }}>
-      <Text style={{ marginBottom: 8, fontSize: 16, fontWeight: '500' }}>
-        Email
-      </Text>
-      <Input placeholder="Enter your email address" />
+    <View style={{ padding: 20 }}>
+      <Text>Login</Text>
 
-      <Text style={{ marginTop: 16, marginBottom: 8, fontSize: 16, fontWeight: '500' }}>
-        Password
-      </Text>
-      <Input
-        placeholder="Enter your password"
-        secureTextEntry
-        rightIcon={<MaterialCommunityIcons name="eye-off" size={18} color="#B8B8B8" />}
-      />
+      <Input placeholder="Email" onChangeText={setEmail} />
+      <Input placeholder="Password" secureTextEntry onChangeText={setPassword} />
 
-      <View style={{ marginTop: 24 }}>
-        <Button title="Login" onPress={() => {}} />
-      </View>
+      <Button title="Login" onPress={handleLogin} />
+
+      <Text onPress={() => router.push("/(auth)/register")}>
+        Register
+      </Text>
     </View>
   );
 }
