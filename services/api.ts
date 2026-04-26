@@ -26,3 +26,6 @@ export const createHabit = (data: {
 
 export const toggleHabit = (id: string) =>
   api.patch(`/habits/${id}/toggle`);
+
+export const deleteHabit = (id: string) =>
+  api.delete(`/habits/${id}`);

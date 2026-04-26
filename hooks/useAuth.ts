@@ -15,8 +15,9 @@ export const useAuth = () => {
     return token;
   };
 
-  const register = async (email: string, password: string) => {
+  const register = async (name: string, email: string, password: string) => {
     return api.post("/auth/register", {
+      name,
       email,
       password,
     });
